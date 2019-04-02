@@ -168,15 +168,15 @@ class LinkedList{
       return;
    }
    if (other.size!=0){
-  this.end.setNext(other.start);
-  other.start.setPrev(this.end);
-  this.end = other.end;
-  other.start = null;
-  other.end = null;
-  this.size += other.size();
-  other.size = 0;
-  return;
-}
+    this.end.setNext(other.start);
+    other.start.setPrev(this.end);
+    this.end = other.end;
+    other.start = null;
+    other.end = null;
+    this.size += other.size();
+    other.size = 0;
+    return;
+  }
  }
 
 
