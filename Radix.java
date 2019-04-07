@@ -57,7 +57,7 @@ public class Radix {
 
   @SuppressWarnings("unchecked")
   public static void radixsort(int[]data){
-      LinkedList<Integer>[] bucket = new LinkedList[10];
+      LinkedList<Integer>[] bucket = new LinkedList[19];
       LinkedList storage = new LinkedList();
       int place = 0;
       int digitIndex = 1;
@@ -69,7 +69,7 @@ public class Radix {
 
 
       for (int m = 0; m < maxDigit; m++) {
-        if (digitIndex == 1) {
+        if (1 == digitIndex) {
 
 
           for (int m1 = 0; m1 < data.length; m1++) {
@@ -82,11 +82,13 @@ public class Radix {
         }
 
         else {
-          for (int y = 0; y < storage.size(); y++) {
-            int num = (int) storage.removeFront();
-            int digit = (num / digitIndex) % 10;
-            bucket[digit + 9].add(num);
+
+          for (int m2 = 0; m2 < storage.size(); m2++) {
+              int num = (int) storage.removeFront();
+              int digit = (num / digitIndex) % 10;
+              bucket[digit + 9].add(num);
           }
+
         }
         storage = new LinkedList();
         while (place < bucket.length) {
