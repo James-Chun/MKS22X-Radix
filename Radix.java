@@ -34,88 +34,75 @@ public class Radix {
       System.out.println();
     }
   }
-  @SuppressWarnings("unchecked")
-  public static void radixsort(int[]data){
-    LinkedList<Integer>[] buckets = new LinkedList[19];
-    LinkedList storage = new LinkedList();
-    int index = 0;
-    int placeValue = 1; // 1 reps the ones digit, 10 reps the tens digit and so on
-    int maxDigit = getMaxDigit(data);
-    for (int i = 0; i < buckets.length; i++) {
-      LinkedList nums = new LinkedList();
-      buckets[i] = nums;
-    }
-    for (int i = 0; i < maxDigit; i++) {
-      if (placeValue == 1) {
-        for (int x = 0; x < data.length; x++) {
-          int num = data[x];
-          int digit = (num / placeValue) % 10;
-          buckets[digit + 9].add(num);
-        }
-      } else {
-        for (int y = 0; y < storage.size(); y++) {
-          int num = (int) storage.removeFront();
-          //System.out.println(num);
-          int digit = (num / placeValue) % 10;
-          //System.out.println(digit);
-          buckets[digit + 9].add(num);
-          //System.out.println(buckets[digit + 9]);
-          //System.out.println(storage);
-        }
+
+
+
+
+  public static int findDigitMax(int[] data) {    //finding the maximum number of digits
+      int maxDigit = 0;
+      for (int n : data) {
+          int c = 1;
+          int temp = n;
+          while (temp / 10 != 0) {
+              c++;
+              temp = temp / 10;
+          }
+          if (c > maxDigit) {
+              maxDigit = c;
+          }
       }
-      //storage = new LinkedList();
-      // int ans = 0;
-      // System.out.println("______________");
-      // for (int p = 0; p < buckets.length; p++) {
-      //   ans += buckets[p].size();
-      //   System.out.println(buckets[p]);
-      // }
-      // System.out.println("ans: " + ans);
-      storage = new LinkedList();
-      // link all the linked lists together have to take into account nulls due to my implementation of linked list
-      while (index < buckets.length) {
-        //System.out.println(buckets[index].size() != 0);
-        if (buckets[index].size() != 0) {
-          storage.extend(buckets[index]);
-        }
-        index++;
-      }
-      // System.out.println("______________!");
-      // for (int p = 0; p < buckets.length; p++) {
-      //   System.out.println(buckets[p]);
-      // }
-      placeValue *= 10;
-      index = 0;
-      // testing
-      //System.out.println("ans: " + ans);
-      for (int j = 0; j < buckets.length; j++) {
-        buckets[j].clear();
-      }
-      //System.out.println(placeValue);
-      // System.out.println("storage");
-      // System.out.println(storage.size());
-    }
-    for (int i = 0; i < data.length; i++) {
-      //System.out.println(i);
-      data[i] = (int) storage.removeFront();
-    }
-    // System.out.println("data");
-    // System.out.println(Arrays.toString(data));
+      return maxDigit;
   }
 
-  public static int getMaxDigit(int[] data) {
-    int max = 0;
-    for (int num : data) {
-      int count = 1;
-      int temp = num;
-      while (temp / 10 != 0) {
-        count++;
-        temp = temp / 10;
+
+  @SuppressWarnings("unchecked")
+  public static void radixsort(int[]data){
+      LinkedList<Integer>[] bucket = new LinkedList[10];
+      LinkedList storage = new LinkedList();
+      int place = 0;
+      int digitIndex = 1;
+      int maxDigit = findDigitMax(data);
+      for (int m = 0; m < bucket.length; m++) {
+          LinkedList nums = new LinkedList();
+          bucket[m] = nums;
       }
-      if (count > max) {
-        max = count;
+
+
+      for (int m = 0; m < maxDigit; m++) {
+        if (digitIndex == 1) {
+
+
+          for (int m1 = 0; m1 < data.length; m1++) {
+            int num = data[m1];
+            int digit = (num / digitIndex) % 10;
+            bucket[digit + 9].add(num);
+          }
+
+
+        }
+
+        else {
+          for (int y = 0; y < storage.size(); y++) {
+            int num = (int) storage.removeFront();
+            int digit = (num / digitIndex) % 10;
+            bucket[digit + 9].add(num);
+          }
+        }
+        storage = new LinkedList();
+        while (place < bucket.length) {
+          if (bucket[place].size() != 0) {
+            storage.extend(bucket[place]);
+          }
+          place++;
+        }
+        digitIndex *= 10;
+        place = 0;
+        for (int j = 0; j < bucket.length; j++) {
+          bucket[j].clear();
+        }
       }
-    }
-    return max;
+      for (int i = 0; i < data.length; i++) {
+        data[i] = (int) storage.removeFront();
+      }
   }
 }
